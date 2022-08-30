@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Connection, PublicKey, clusterApiUrl, ConfirmOptions, Commitment } from "@solana/web3.js";
-// import idl from "../../target/idl/lending_protocol.json";
-import idl from "./lending_protocol.json";
-import { AnchorProvider, utils, web3 } from '@project-serum/anchor';
+import idl from "./idl.json";
+import { AnchorProvider, utils, web3, BN } from '@project-serum/anchor';
 import { Program } from '@project-serum/anchor';
 import { Buffer } from 'buffer';
 const { SystemProgram } = web3;
 window.Buffer = Buffer;
-
 
 const programID = new PublicKey(idl.metadata.address);
 const network = "http://127.0.0.1:8899";
@@ -71,8 +69,9 @@ const App = () => {
       const program = new Program(idl as any, programID, provider);
       const [log] = await PublicKey.findProgramAddress(
         [ 
-          utils.bytes.utf8.encode("CAMPAIGN"),
+          utils.bytes.utf8.encode("CAM"),
           provider.wallet.publicKey.toBuffer(),
+          new BN(0).toArrayLike(Buffer)
         ],
         program.programId
       );

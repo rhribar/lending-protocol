@@ -17,7 +17,7 @@ pub mod lending_protocol {
 
 #[derive(Accounts)]
 pub struct Logger<'info> {
-    #[account(init, payer=user, space=9000, seeds=[b"CAMPAIGN".as_ref(), user.key().as_ref()], bump)] // creating a new campaign account
+    #[account(init, payer=user, space=9000, seeds=[b"CAM".as_ref(), user.key().as_ref()], bump)] // creating a new campaign account
     pub log: Account<'info, Log>,
     #[account(mut)] // user account is mutable
     pub user: Signer<'info>, // user is the signer
