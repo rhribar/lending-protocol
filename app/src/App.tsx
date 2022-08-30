@@ -71,7 +71,6 @@ const App = () => {
         [ 
           utils.bytes.utf8.encode("CAM"),
           provider.wallet.publicKey.toBuffer(),
-          new BN(0).toArrayLike(Buffer)
         ],
         program.programId
       );
