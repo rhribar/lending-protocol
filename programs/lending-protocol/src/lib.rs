@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("EsRUR46kq9vBqzzqNwTUSyZDz7VDp6H6EoxQ44D8VYSw");
+declare_id!("J57zpbkxpJPVRvvvHZ9a7RzRTPAJ1LAcUmE4sK7ZBVqa");
 // J57zpbkxpJPVRvvvHZ9a7RzRTPAJ1LAcUmE4sK7ZBVqa Windows
 #[program]
 pub mod lending_protocol {
