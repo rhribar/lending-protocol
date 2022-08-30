@@ -2,7 +2,11 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-lending_protocol = "J57zpbkxpJPVRvvvHZ9a7RzRTPAJ1LAcUmE4sK7ZBVqa"
+lending_protocol = "EsRUR46kq9vBqzzqNwTUSyZDz7VDp6H6EoxQ44D8VYSw"
+[programs.devnet]
+lending_protocol = "EsRUR46kq9vBqzzqNwTUSyZDz7VDp6H6EoxQ44D8VYSw"
+[programs.mainnet]
+lending_protocol = "EsRUR46kq9vBqzzqNwTUSyZDz7VDp6H6EoxQ44D8VYSw"
 
 [registry]
 url = "https://api.apr.dev"
@@ -13,3 +17,4 @@ wallet = "./id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+copy-idl = "mkdir -p app/src && cp target/idl/lending_protocol.json app/src/idl.json"

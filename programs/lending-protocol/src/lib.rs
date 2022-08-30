@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
-declare_id!("J57zpbkxpJPVRvvvHZ9a7RzRTPAJ1LAcUmE4sK7ZBVqa");
-
+declare_id!("EsRUR46kq9vBqzzqNwTUSyZDz7VDp6H6EoxQ44D8VYSw");
+// J57zpbkxpJPVRvvvHZ9a7RzRTPAJ1LAcUmE4sK7ZBVqa Windows
 #[program]
 pub mod lending_protocol {
     use super::*;
@@ -17,7 +17,7 @@ pub mod lending_protocol {
 
 #[derive(Accounts)]
 pub struct Logger<'info> {
-    #[account(init, payer=user, space=9000, seeds=[b"CAMPAIGN".as_ref(), user.key().as_ref()], bump)] // creating a new campaign account
+    #[account(init, payer=user, space=9000, seeds=[b"CAMPAIG".as_ref(), user.key().as_ref()], bump)] // creating a new campaign account
     pub log: Account<'info, Log>,
     #[account(mut)] // user account is mutable
     pub user: Signer<'info>, // user is the signer
