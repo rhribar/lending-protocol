@@ -2,16 +2,16 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-lending_protocol = "J57zpbkxpJPVRvvvHZ9a7RzRTPAJ1LAcUmE4sK7ZBVqa"
+lending_protocol = "7VCF7Hziuyyq9t4q3C2HgTdPGMqn3CiQDSgFKvECEMcH"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "./id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
-copy-idl = "mkdir -p app/src && cp target/idl/lending_protocol.json app/src/idl.json"
-deploy-local = "anchor build && anchor run copy-idl && anchor deploy --provider.cluster localnet"
+copy-idl = "mkdir -p app/src && cp target/idl/lendingprotocol.json app/src/idl.json"
+deploy-local = "anchor build && anchor deploy && anchor run copy-idl"
