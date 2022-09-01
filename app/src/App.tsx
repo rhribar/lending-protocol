@@ -10,58 +10,54 @@ const { SystemProgram } = web3;
 window.Buffer = Buffer;
 
 const App = () => {
-  const [campaigns, setCampaigns] = useState([]);
+  const [loans, setLoans] = useState([]);
   const [walletAddress, connectWallet, checkIfWalletIsConnected] = useWallet();
   const [connection, provider, programID, program] = useWorkspace();
 
-  const getCampaigns = async() => {
+  const getLoans = async() => {
     Promise.all(
       (await connection.getProgramAccounts(programID)).map(
-        async (campaign) => ({
-        pubkey: campaign.pubkey,
-        ...(await program.account.campaign.fetch(campaign.pubkey)),
+        async (loan) => ({
+        pubkey: loan.pubkey,
+        ...(await program.account.loan.fetch(loan.pubkey)),
       })
       )
-    ).then(campaigns => setCampaigns(campaigns));
-    /* console.log(await connection.getProgramAccounts(programID));
-    console.log(program.account.campaign); */
-    /* setCampaigns(await connection.getProgramAccounts(programID)); */
+    ).then(loans => setLoans(loans));
   } 
 
-  const createCampaign = async () => {
+  const createLoan= async () => {
     try {
       // program derived account, bumps and seeds used for calculating the address of our campaing account
-      const [campaign] = await PublicKey.findProgramAddress(
+      const [loan] = await PublicKey.findProgramAddress(
         [ 
-          utils.bytes.utf8.encode("CAMPAIGN"),
+          utils.bytes.utf8.encode("LOAN"),
           provider.wallet.publicKey.toBuffer(),
         ],
         program.programId
       );
-      await program.rpc.create('campaign name', 'campaign description', {
+      await program.rpc.createApplication('loan name', 'loan description', {
         accounts: {
-          campaign,
+          loan,
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
         },
       });
-      console.log('Created a new campaign w/ address:', campaign.toString());
+      console.log('Created a new loans w/ address:', loan.toString());
     } catch(error) {
-      console.error('Error creating campaign account:', error);
+      console.error('Error creating loans account:', error);
     }
   }
 
-  const donate = async publicKey => {
+  const loanOut = async publicKey => {
     try {
-      await program.rpc.donate(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
+      await program.rpc.loanFunds(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
         accounts: {
-          campaign: publicKey,
+          loan: publicKey,
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
         },
       });
       console.log('Donated soem money to:', publicKey.toString());
-      getCampaigns();
     } catch (error) {
       console.error("Error donating:", error);
     }
@@ -69,13 +65,13 @@ const App = () => {
 
   const withdraw = async publicKey => {
     try {
-      await program.rpc.withdraw(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
+      await program.rpc.withdrawFunds(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
         accounts: {
-          campaign: publicKey,
+          loan: publicKey,
           user: provider.wallet.publicKey,
         },
       });
-      console.log('WIthdrew some money from:', publicKey.toString());
+      console.log('Withdrew some money from:', publicKey.toString());
     } catch (error) {
       console.error("error withdrawing:", error);
     }
@@ -86,16 +82,17 @@ const App = () => {
   )
   const renderConnectedContainer = () => (
     <>
-      <button onClick={createCampaign}>Create a campaign</button>
-      <button onClick={getCampaigns}>Get a list of campaigns...</button>
+      <button onClick={createLoan}>Create a loan</button>
+      <button onClick={getLoans}>Get a list of loans...</button>
       <br />
-      {campaigns.map(campaign => <>
-        <p>Campaign ID: {campaign.pubkey.toString()}</p>
-        <p>Balance: {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}</p>
-        <p>{campaign.name}</p>
-        <p>{campaign.description}</p>
-        <button onClick={() => donate(campaign.pubkey)}>Click to donate!</button>
-        <button onClick={() => withdraw(campaign.pubkey)}>Click to withdraw!</button>
+      {loans.map(loan => <>
+        <p>Loan ID: {loan.pubkey.toString()}</p>
+        <p>Balance: {(loan.amountLoaned / web3.LAMPORTS_PER_SOL).toString()}</p>
+        {console.log(loan.amountLoaned)}
+        <p>{loan.name}</p>
+        <p>{loan.description}</p>
+        <button onClick={() => loanOut(loan.pubkey)}>Click to loan!</button>
+        <button onClick={() => withdraw(loan.pubkey)}>Click to withdraw!</button>
       <br />
       </>)}
     </>

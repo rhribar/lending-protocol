@@ -3,10 +3,10 @@
   "name": "lendingprotocol",
   "instructions": [
     {
-      "name": "create",
+      "name": "createApplication",
       "accounts": [
         {
-          "name": "campaign",
+          "name": "loan",
           "isMut": true,
           "isSigner": false
         },
@@ -33,10 +33,10 @@
       ]
     },
     {
-      "name": "withdraw",
+      "name": "withdrawFunds",
       "accounts": [
         {
-          "name": "campaign",
+          "name": "loan",
           "isMut": true,
           "isSigner": false
         },
@@ -54,10 +54,10 @@
       ]
     },
     {
-      "name": "donate",
+      "name": "loanFunds",
       "accounts": [
         {
-          "name": "campaign",
+          "name": "loan",
           "isMut": true,
           "isSigner": false
         },
@@ -82,7 +82,7 @@
   ],
   "accounts": [
     {
-      "name": "Campaign",
+      "name": "Loan",
       "type": {
         "kind": "struct",
         "fields": [
@@ -99,7 +99,7 @@
             "type": "string"
           },
           {
-            "name": "amountDonated",
+            "name": "amountLoaned",
             "type": "u64"
           }
         ]
@@ -107,6 +107,6 @@
     }
   ],
   "metadata": {
-    "address": "He8syjZ4bfR9AWMJQzsfKFABshsVzqA594yskiGdehjW"
+    "address": "8CbXfcqsoiJ755MPa7WCXRTgpiisP5Ycr7HBbYzh1E9z"
   }
 }
