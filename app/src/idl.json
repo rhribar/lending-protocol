@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.0.0",
   "name": "lendingprotocol",
   "instructions": [
     {
@@ -33,10 +33,31 @@
       ]
     },
     {
+      "name": "createPool",
+      "accounts": [
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "withdrawFunds",
       "accounts": [
         {
-          "name": "loan",
+          "name": "pool",
           "isMut": true,
           "isSigner": false
         },
@@ -78,9 +99,47 @@
           "type": "u64"
         }
       ]
+    },
+    {
+      "name": "fundPool",
+      "accounts": [
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     }
   ],
   "accounts": [
+    {
+      "name": "Pool",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amountHold",
+            "type": "u64"
+          }
+        ]
+      }
+    },
     {
       "name": "Loan",
       "type": {
@@ -107,6 +166,6 @@
     }
   ],
   "metadata": {
-    "address": "8CbXfcqsoiJ755MPa7WCXRTgpiisP5Ycr7HBbYzh1E9z"
+    "address": "85vFwbrxRPT5Z6QbAA7f6ZRCMSTZp9M58p626XA2LuDg"
   }
 }

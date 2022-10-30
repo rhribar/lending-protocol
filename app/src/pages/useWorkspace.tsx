@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import idl from "./idl.json";
+import idl from "./../idl.json";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { AnchorProvider, Program } from '@project-serum/anchor';
 
