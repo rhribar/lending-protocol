@@ -6,22 +6,26 @@ import useWorkspace from './useWorkspace';
 
 const { SystemProgram } = web3;
 
-const usePool = () => {
-    const [poolPubkey, setPool] = useState();
-    const [connection, provider, programID, program] = useWorkspace();
+export const POOL_PROGRAM = new web3.PublicKey(
+  "HzGTJxHA4sZZGUU1V6ZaLtJwid9tiyKcapJzwP334js3"
+);
+const PREFIX = "POOL";
 
-    const findPool = async () => {
-      const [pool] = await PublicKey.findProgramAddress(
-          [ 
-          utils.bytes.utf8.encode("POOL"),
-          provider.wallet.publicKey.toBuffer(),
-          ],
-          program.programId
-      );
-      console.log(pool, poolPubkey);
-      return pool;
+const usePool = () => {
+  const [connection, provider, programID, program] = useWorkspace();
+
+  const findPool = async () => {
+    const [pool] = await PublicKey.findProgramAddress(
+      [ 
+        utils.bytes.utf8.encode(PREFIX),
+        provider.wallet.publicKey.toBuffer(),
+      ],
+      program.programId
+    );
+    console.log(POOL_PROGRAM, program.programId);
+    return pool;
   }
 
-  return [findPool];
+  return [findPool, POOL_PROGRAM];
 }
 export default usePool;

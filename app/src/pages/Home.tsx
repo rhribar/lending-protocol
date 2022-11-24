@@ -23,50 +23,42 @@ const StyledWindow = styled.div`
 `;
 
 const Home = () => {
-    const [loans, setLoans] = useState([]);
     const [walletAddress, connectWallet, checkIfWalletIsConnected] = useWallet();
-    const [connection, provider, programID, program] = useWorkspace();
+    const [provider, program] = useWorkspace();
     const [findPool] = usePool();
     const navigate = useNavigate();
-    const [poolPubkey, setPool] = useState();
+    /* const [loans, setLoans] = useState([]); */
+    /* const [poolPubkey, setPool] = useState(); */
 
-    const createPool = async () => {
-        try {
-          // program derived account, bumps and seeds used for calculating the address of our campaing account
+    /* const createPool = async () => {
+      try {
+        // program derived account, bumps and seeds used for calculating the address of our campaing account
         const pool = await findPool();
-        console.log(pool);
-          await program.rpc.createPool({
-            accounts: {
-              pool,
-              user: provider.wallet.publicKey,
-              systemProgram: SystemProgram.programId,
-            },
-          });
-          setPool(pool);
-          console.log('Created a new pool w/ address:', pool.toString());
-        } catch(error) {
-          console.log('Error creating pool account:', error);
-        }
-    }
-    console.log(poolPubkey);
-    const initPool = () => {
+        console.log(program);
+        await program.rpc.createPool({
+          accounts: {
+            pool,
+            user: provider.wallet.publicKey,
+            systemProgram: SystemProgram.programId,
+          },
+        }).rpc();
+        console.log('Created a new pool w/ address:', pool.toString());
+      } catch (error) {
+        console.log('Error creating pool account:', error);
+      }
+    } */
+
+    /* console.log(poolPubkey); */
+    /*const initPool = () => {
         if (poolPubkey === undefined) {
             createPool();
             console.log(poolPubkey);
         } else {
             alert("Pool already exists");
         }
-    }
-    
-    useEffect(() => {
-      const onLoad = async() => {
-        await checkIfWalletIsConnected();
-      }
-      window.addEventListener('load', onLoad)
-      return () => window.removeEventListener("load", onLoad);
-    }, []);
+    } */
 
-    const getLoans = async() => {
+    /* const getLoans = async() => {
         Promise.all(
           (await connection.getProgramAccounts(programID)).map(
             async (loan) => ({
@@ -76,68 +68,76 @@ const Home = () => {
           )
         ).then(loans => setLoans(loans));
         console.log(programID, loans);
-    } 
+    }  */
     
     const loanOut = async publicKey => {
-        try {
-          await program.rpc.loanFunds(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
-            accounts: {
-              loan: publicKey,
-              user: provider.wallet.publicKey,
-              systemProgram: SystemProgram.programId,
-            },
-          });
-          console.log('Donated soem money to:', publicKey.toString());
-        } catch (error) {
-          console.error("Error donating:", error);
-        }
+      try {
+        await program.rpc.loanFunds(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
+          accounts: {
+            loan: publicKey,
+            user: provider.wallet.publicKey,
+            systemProgram: SystemProgram.programId,
+          },
+        });
+        console.log('Donated some money to:', publicKey.toString());
+      } catch (error) {
+        console.error("Error donating:", error);
+      }
     };
     
     const withdraw = async publicKey => {
-        try {
-          await program.rpc.withdrawFunds(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
-            accounts: {
-              loan: publicKey,
-              user: provider.wallet.publicKey,
-            },
-          });
-          console.log('Withdrew some money from:', publicKey.toString());
-        } catch (error) {
-          console.error("error withdrawing:", error);
-        }
+      try {
+        await program.rpc.withdrawFunds(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
+          accounts: {
+            loan: publicKey,
+            user: provider.wallet.publicKey,
+          },
+        });
+        console.log('Withdrew some money from:', publicKey.toString());
+      } catch (error) {
+        console.error("error withdrawing:", error);
+      }
     }
-    
 
+    useEffect(() => {
+      const onLoad = async() => {
+        await checkIfWalletIsConnected();
+      }
+      window.addEventListener('load', onLoad)
+      return () => window.removeEventListener("load", onLoad);
+    }, []);
+    
     const renderNotConnectedContainer = () => (
-        <Button variant="contained" onClick={connectWallet}>Connect to Wallet</Button>
-      )
+      <Button variant="contained" onClick={connectWallet}>Connect to Wallet</Button>
+    )
+
     const renderConnectedContainer = () => (
     <>
-        <Button variant="contained" onClick={() => navigate("/invest")}>Invest</Button>
-        <Button variant="outlined" onClick={() => navigate("/apply")}>Apply for a loan</Button>
-        
-        <Button variant="outlined" onClick={initPool}>Initialize the application</Button>
-        
-        {/* <button onClick={getLoans}>Get a list of loans...</button> */}
+      <Button variant="contained" onClick={() => navigate("/invest")}>Invest</Button>
+      <Button variant="outlined" onClick={() => navigate("/apply")}>Apply for a loan</Button>
+      
+      {/* <Button variant="outlined" onClick={createPool}>Initialize the pool</Button> */}
+      
+      {/* <button onClick={getLoans}>Get a list of loans...</button> */}
+      <br />
+      {/* {loans.map(loan => <>
+        <p>Loan ID: {loan.pubkey.toString()}</p>
+        <p>Balance: {(loan.amountLoaned / web3.LAMPORTS_PER_SOL).toString()}</p>
+        {console.log(loan.amountLoaned)}
+        <p>{loan.name}</p>
+        <p>{loan.description}</p>
+        <button onClick={() => loanOut(loan.pubkey)}>Click to loan!</button>
+        <button onClick={() => withdraw(loan.pubkey)}>Click to withdraw!</button>
         <br />
-        {loans.map(loan => <>
-            <p>Loan ID: {loan.pubkey.toString()}</p>
-            <p>Balance: {(loan.amountLoaned / web3.LAMPORTS_PER_SOL).toString()}</p>
-            {console.log(loan.amountLoaned)}
-            <p>{loan.name}</p>
-            <p>{loan.description}</p>
-            <button onClick={() => loanOut(loan.pubkey)}>Click to loan!</button>
-            <button onClick={() => withdraw(loan.pubkey)}>Click to withdraw!</button>
-        <br />
-        </>)}
+      </>)} */}
     </>
     )
 
     return (
-    <StyledWindow>
-        {!walletAddress && renderNotConnectedContainer()}
-        {walletAddress && renderConnectedContainer()}
-    </StyledWindow>
+      <StyledWindow>
+          {!walletAddress && renderNotConnectedContainer()}
+          {walletAddress && renderConnectedContainer()}
+      </StyledWindow>
     )
 };
   
